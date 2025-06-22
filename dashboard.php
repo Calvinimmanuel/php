@@ -1,3 +1,9 @@
+<?php
+
+include "service/database.php";
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,9 +15,9 @@
 
 <body>
     <?php include "layout/header.html" ?>
-    <main>
-        <p>Halo Selamat datang di website saya</p>
-    </main>
+
+    <h1>Selamat datang <?= $_SESSION["username"] ?></h1>
+
     <?php include "layout/footer.html" ?>
 </body>
 

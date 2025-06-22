@@ -1,11 +1,24 @@
-<?php 
-if (isset($_POST['login'])){
-    echo " terimkasih sudah login ";
-    $username= $_POST['username'];
-    $password = $_POST['password'];
-    
-}
+<?php
+include "service/database.php";
+session_start();
 
+if (isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+
+    $result = $db->query($query);
+
+    if ($result->num_rows > 0) {
+        $data = $result->fetch_assoc();
+        $_SESSION["username"] = $data["username"];
+        $_SESSION["is_logged_in"] = true;
+        header("Location: dashboard.php");
+    } else {
+        echo "Username atau password salah";
+    }
+}
 ?>
 
 
