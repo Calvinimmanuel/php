@@ -2,7 +2,11 @@
 
 include "service/database.php";
 session_start();
-
+if (isset($_SESSION["is_logged_in"])) {
+    session_unset();
+        session_destroy();
+        header("Location:home.php");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +21,9 @@ session_start();
     <?php include "layout/header.html" ?>
 
     <h1>Selamat datang <?= $_SESSION["username"] ?></h1>
+    <form action="dashboard.php" method="post">
+        <button type="submit" name="logout">Logout</button>
+    </form>
 
     <?php include "layout/footer.html" ?>
 </body>
