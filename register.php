@@ -3,7 +3,7 @@ session_start();
 require_once "service/database.php";
 require_once "service/utils.php";
 
-if (isset($_SESSION["is_logged_in"]) && $_SESSION["is_logged_in"]) {
+if (isset($_SESSION["is_logged_in"])) {
     redirect("home.php"); // Changed to home.php for consistency
 }
 

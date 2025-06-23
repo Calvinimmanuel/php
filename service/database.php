@@ -5,10 +5,17 @@ $password = "";
 $database = "php";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
+    $db = new mysqli($host, $username, $password, $database);
+
+    // Check connection
+    if ($db->connect_error) {
+        throw new Exception("Connection failed: " . $db->connect_error);
+    }
+
+    // Set character set to utf8mb4
+    if (!$db->set_charset("utf8mb4")) {
+        throw new Exception("Error loading character set utf8mb4: " . $db->error);
+    }
+} catch (Exception $e) {
+    die("Database connection error: " . $e->getMessage());
 }
-?>
