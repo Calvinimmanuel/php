@@ -3,14 +3,8 @@ ob_start();
 include "service/database.php";
 session_start();
 
-// Check if user is logged in
-if (!isset($_SESSION["is_logged_in"]) || !isset($_SESSION["username"])) {
-    header("Location: login.php");
-    exit;
-}
-
-$username = $_SESSION["username"];
-$message = "";
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : ''; // Contoh dari session
+unset($_SESSION['message']); // Opsional: hapus setelah digunakan
 
 // Handle Add Task
 if (isset($_POST["add_task"])) {
@@ -75,19 +69,21 @@ ob_end_flush();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do List - My Website</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <div class="container mx-auto p-4 max-w-2xl">
         <?php include "layout/header.html" ?>
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">To Do List for <?php echo htmlspecialchars($username); ?></h1>
-        
+
         <!-- Message Display -->
-        <?php if ($message): ?>
+        <?php if (isset($message) && $message): ?>
             <p class="text-center mb-4 <?php echo strpos($message, 'Error') === false ? 'text-green-500' : 'text-red-500'; ?>">
                 <?php echo htmlspecialchars($message); ?>
             </p>
@@ -96,18 +92,16 @@ ob_end_flush();
         <!-- Add Task Form -->
         <form action="home.php" method="post" class="mb-6">
             <div class="flex gap-2">
-                <input 
-                    type="text" 
-                    name="task" 
-                    placeholder="Enter a new task" 
+                <input
+                    type="text"
+                    name="task"
+                    placeholder="Enter a new task"
                     class="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                >
-                <button 
-                    type="submit" 
-                    name="add_task" 
-                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
-                >
+                    required>
+                <button
+                    type="submit"
+                    name="add_task"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
                     Add Task
                 </button>
             </div>
@@ -130,33 +124,29 @@ ob_end_flush();
                             <!-- Edit Form (Hidden by default, toggled by JS) -->
                             <form action="home.php" method="post" class="hidden edit-form-<?php echo $task['id']; ?>">
                                 <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                                <input 
-                                    type="text" 
-                                    name="task" 
-                                    value="<?php echo htmlspecialchars($task['task']); ?>" 
+                                <input
+                                    type="text"
+                                    name="task"
+                                    value="<?php echo htmlspecialchars($task['task']); ?>"
                                     class="px-2 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                >
-                                <button 
-                                    type="submit" 
-                                    name="edit_task" 
-                                    class="bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600"
-                                >
+                                    required>
+                                <button
+                                    type="submit"
+                                    name="edit_task"
+                                    class="bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600">
                                     Save
                                 </button>
                             </form>
                             <!-- Edit/Delete Buttons -->
-                            <button 
+                            <button
                                 onclick="toggleEditForm(<?php echo $task['id']; ?>)"
-                                class="bg-yellow-500 text-white px-2 py-1 rounded-md hover:bg-yellow-600 edit-btn-<?php echo $task['id']; ?>"
-                            >
+                                class="bg-yellow-500 text-white px-2 py-1 rounded-md hover:bg-yellow-600 edit-btn-<?php echo $task['id']; ?>">
                                 Edit
                             </button>
-                            <a 
-                                href="home.php?delete=<?php echo $task['id']; ?>" 
+                            <a
+                                href="home.php?delete=<?php echo $task['id']; ?>"
                                 class="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600"
-                                onclick="return confirm('Are you sure you want to delete this task?')"
-                            >
+                                onclick="return confirm('Are you sure you want to delete this task?')">
                                 Delete
                             </a>
                         </div>
@@ -180,4 +170,5 @@ ob_end_flush();
         }
     </script>
 </body>
+
 </html>

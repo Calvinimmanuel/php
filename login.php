@@ -1,11 +1,11 @@
 <?php
 include "service/database.php";
 session_start();
+
 $login_message = "";
 
 if (isset($_SESSION["is_logged_in"])) {
-    header("Location: dashboard.php");
-    exit;
+    header("Location: home.php");
 }
 
 if (isset($_POST['login'])) {
@@ -28,7 +28,7 @@ if (isset($_POST['login'])) {
             if (password_verify($password, $data['password'])) {
                 $_SESSION["username"] = $data["username"];
                 $_SESSION["is_logged_in"] = true;
-                header("Location: dashboard.php");
+                header("Location: home.php");
                 exit;
             } else {
                 $login_message = "Username atau password salah";
