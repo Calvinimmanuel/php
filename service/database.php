@@ -19,3 +19,4 @@ try {
 } catch (Exception $e) {
     die("Database connection error: " . $e->getMessage());
 }
+?>
