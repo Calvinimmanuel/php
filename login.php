@@ -73,7 +73,6 @@
 
         <p class="text-center text-sm text-gray-700">
             Belum punya akun? <a href="register.php" class="text-green-700 hover:underline">Daftar di sini</a>
-        </p>
-    </div>
+
 </body>
 </html>
